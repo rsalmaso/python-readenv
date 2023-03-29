@@ -1,5 +1,5 @@
 # Changelog
 
-## dev
+## 0.1.0
 
 * first public release
