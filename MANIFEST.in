@@ -1,0 +1,8 @@
+include README.md
+include CHANGELOG.md
+include AUTHORS
+include LICENSE
+include MANIFEST.in
+graft readenv
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

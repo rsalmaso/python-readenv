@@ -1,0 +1,128 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools"]
+
+[project]
+name = "python-readenv"
+description = "read an env file and export to os.environ"
+authors = [
+    {name = "Raffaele Salmaso", email = "raffaele.salmaso@gmail.com"},
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = ["env", "envvar", "environ", "environment", "environment variable"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dynamic = [
+    "version",
+]
+
+[project.urls]
+"Home Page" = "https://pypi.org/project/python-readenv/"
+Documentation = "https://github.com/rsalmaso/python-readenv/blob/main/README.md"
+GitHub = "https://github.com/rsalmaso/python-readenv"
+Changelog = "https://github.com/rsalmaso/python-readenv/blob/main/CHANGELOG.md"
+"Bug Reports" = "https://github.com/rsalmaso/python-readenv/discussions"
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.dynamic]
+version = {attr = "readenv.__version__"}
+
+[tool.distutils.bdist_wheel]
+universal = false
+
+[tool.black]
+include = '\.pyi?$'
+exclude = '''
+/(
+  __pycache__
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | build
+  | dist
+)/
+'''
+line-length = 120
+safe = true
+target-version = ["py38"]
+
+[tool.ruff]
+select = [
+    "B", # flake8-bugbear
+    "C90", # mccabe
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+    "W", # pycodestyle
+]
+ignore = [
+    "E722", # Do not use bare except, specify exception instead
+    "B904",
+]
+
+# # Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = [
+    "I",
+]
+unfixable = [
+    "F401", # don't remove unused import
+]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+line-length = 120
+
+target-version = "py38"
+
+[tool.ruff.mccabe]
+max-complexity = 18
+
+[tool.ruff.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+known-first-party = [
+]
+known-third-party = [
+]
+order-by-type = false
