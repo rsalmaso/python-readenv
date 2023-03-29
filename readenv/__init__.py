@@ -22,7 +22,7 @@ from typing import Tuple
 
 from .version import get_version
 
-VERSION: Tuple[int, int, int, str, int] = (0, 1, 0, "final", 0)
+VERSION: Tuple[int, int, int, str, int] = (0, 1, 1, "final", 0)
 
 __author__: str = "Raffaele Salmaso"
 __author_email__: str = "raffaele.salmaso@gmail.com"

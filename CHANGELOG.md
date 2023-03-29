@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.1.1
 
 * can pass env absolute path
 
