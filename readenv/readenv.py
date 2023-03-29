@@ -35,19 +35,35 @@ def replace(match: re.Match[str]) -> str:
     return os.environ.get(name, "")
 
 
-def load(filename: Union[str, pathlib.PurePath]) -> None:
-    """Load filename.env"""
+def get_content(filename: pathlib.Path) -> str:
+    content: str = ""
+    try:
+        with open(str(filename)) as f:
+            content = f.read()
+    except IOError:
+        pass
+    return content
 
+
+def get_content_from_parts(filename: str) -> str:
     parts: Sequence[str] = pathlib.Path().cwd().parts
     content: str = ""
     for index in reversed(list(range(1, len(parts) + 1))):
-        env_filename: str = str(pathlib.Path(os.path.join(*parts[:index], filename)))
+        path: pathlib.Path = pathlib.Path(os.path.join(*parts[:index], filename))
         try:
-            with open(env_filename) as f:
+            with open(str(path)) as f:
                 content = f.read()
                 break
         except IOError:
             pass
+    return content
+
+
+def load(filename: Union[str, pathlib.PurePath]) -> None:
+    """Load filename.env"""
+
+    path: pathlib.Path = pathlib.Path(filename)
+    content: str = get_content(path) if path.is_absolute() else get_content_from_parts(str(filename))
 
     for line in content.splitlines():  # ???
         m1: Optional[re.Match[str]] = RE1.match(line)
