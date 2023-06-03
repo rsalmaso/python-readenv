@@ -66,9 +66,7 @@ def get_content_from_parts(filename: str) -> str:
     return content
 
 
-def load(filename: Union[str, pathlib.PurePath]) -> None:
-    """Load filename.env"""
-
+def _load(filename: Union[str, pathlib.PurePath]) -> None:
     path: pathlib.Path = pathlib.Path(filename)
     content: str = get_content(path) if path.is_absolute() else get_content_from_parts(str(filename))
 
@@ -93,4 +91,4 @@ def loads(*filenames: Union[str, pathlib.PurePath]) -> None:
     """Load a list of filenames"""
     filenames = filenames if filenames else (".env", ".env.local")
     for filename in filenames:
-        load(filename)
+        _load(filename)

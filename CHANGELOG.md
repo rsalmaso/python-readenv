@@ -3,6 +3,7 @@
 ## dev
 
 * fix typing support for python 3.8
+* made `readenv.redenv.load` "private" (`readenv.readenv._load`)
 
 ## 0.1.1
 
