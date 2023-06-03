@@ -21,6 +21,7 @@
 import builtins
 from typing import Final
 
+from .readenv import load  # noqa: F401
 from .version import get_version, VersionType
 
 VERSION: Final[VersionType] = (0, 1, 1, "final", 0)
