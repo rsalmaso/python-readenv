@@ -25,7 +25,7 @@ from typing import Final, Optional, Sequence, Union
 
 from .version import PY39
 
-__all__ = ["load", "loads"]
+__all__ = ["load"]
 
 if PY39:
     from .typing39 import MatchType, PatternType
@@ -87,8 +87,8 @@ def _load(filename: Union[str, pathlib.PurePath]) -> None:
             os.environ[key] = val  # override if exists
 
 
-def loads(*filenames: Union[str, pathlib.PurePath]) -> None:
-    """Load a list of filenames"""
+def load(*filenames: Union[str, pathlib.PurePath]) -> None:
+    """Load a list of filename.env [default=(".env", ".env.local")]"""
     filenames = filenames if filenames else (".env", ".env.local")
     for filename in filenames:
         _load(filename)
