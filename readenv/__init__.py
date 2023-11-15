@@ -21,6 +21,18 @@
 import builtins
 from typing import Final
 
+from .converters import (  # noqa: F401
+    to_bool as bool,
+    to_bytes as bytes,
+    to_decimal as decimal,
+    to_dict as dict,
+    to_float as float,
+    to_int as int,
+    to_json as json,
+    to_list as list,
+    to_str as str,
+    to_tuple as tuple,
+)
 from .env import get, set, setdefault  # noqa: F401
 from .readenv import load  # noqa: F401
 from .version import get_version, VersionType

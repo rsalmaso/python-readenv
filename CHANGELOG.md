@@ -8,6 +8,7 @@
 * export `readenv.readenv.load` as `readenv.load`
 * added `readenv.env.get`, `readenv.env.set`, and `readenv.env.setdefault`,
   and exported to `readenv`
+* added type converters
 
 ## 0.1.1
 
