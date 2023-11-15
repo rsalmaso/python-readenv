@@ -37,7 +37,7 @@ from .env import get, set, setdefault  # noqa: F401
 from .readenv import load  # noqa: F401
 from .version import get_version, VersionType
 
-VERSION: Final[VersionType] = (0, 1, 1, "final", 0)
+VERSION: Final[VersionType] = (0, 2, 0, "final", 0)
 
 __author__: Final[builtins.str] = "Raffaele Salmaso"
 __author_email__: Final[builtins.str] = "raffaele.salmaso@gmail.com"
