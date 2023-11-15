@@ -18,12 +18,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from typing import Tuple
+import builtins
+from typing import Final
 
-from .version import get_version
+from .version import get_version, VersionType
 
-VERSION: Tuple[int, int, int, str, int] = (0, 1, 1, "final", 0)
+VERSION: Final[VersionType] = (0, 1, 1, "final", 0)
 
-__author__: str = "Raffaele Salmaso"
-__author_email__: str = "raffaele.salmaso@gmail.com"
-__version__: str = get_version(VERSION)
+__author__: Final[builtins.str] = "Raffaele Salmaso"
+__author_email__: Final[builtins.str] = "raffaele.salmaso@gmail.com"
+__version__: Final[builtins.str] = get_version(VERSION)

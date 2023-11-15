@@ -21,16 +21,23 @@
 import os
 import pathlib
 import re
-from typing import Optional, Sequence, Union
+from typing import Final, Optional, Sequence, Union
+
+from .version import PY39
 
 __all__ = ["load", "loads"]
 
-RE1: re.Pattern[str] = re.compile(r"\A(?:export )?([A-Za-z_0-9]+)=(.*)\Z")
-RE2: re.Pattern[str] = re.compile(r"\A'(.*)'\Z")
-__posix_variable: re.Pattern[str] = re.compile(r"\$\{[^\}]*\}")
+if PY39:
+    from .typing39 import MatchType, PatternType
+else:
+    from .typing38 import MatchType, PatternType
+
+RE1: Final[PatternType] = re.compile(r"\A(?:export )?([A-Za-z_0-9]+)=(.*)\Z")
+RE2: Final[PatternType] = re.compile(r"\A'(.*)'\Z")
+__posix_variable: Final[PatternType] = re.compile(r"\$\{[^\}]*\}")
 
 
-def replace(match: re.Match[str]) -> str:
+def replace(match: MatchType) -> str:
     name = match.group()[2:-1]
     return os.environ.get(name, "")
 
@@ -66,15 +73,15 @@ def load(filename: Union[str, pathlib.PurePath]) -> None:
     content: str = get_content(path) if path.is_absolute() else get_content_from_parts(str(filename))
 
     for line in content.splitlines():  # ???
-        m1: Optional[re.Match[str]] = RE1.match(line)
+        m1: Optional[MatchType] = RE1.match(line)
         key: str
         val: str
         if m1:
             key, val = m1.group(1), m1.group(2)
-            m2: Optional[re.Match[str]] = RE2.match(val)
+            m2: Optional[MatchType] = RE2.match(val)
             if m2:
                 val = m2.group(1)
-            m3: Optional[re.Match[str]] = RE2.match(val)
+            m3: Optional[MatchType] = RE2.match(val)
             if m3:
                 val = re.sub(r"\\(.)", r"\1", m3.group(1))
             # expand values
