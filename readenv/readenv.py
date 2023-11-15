@@ -23,6 +23,7 @@ import pathlib
 import re
 from typing import Final, Optional, Sequence, Union
 
+from . import env
 from .version import PY39
 
 __all__ = ["load"]
@@ -39,7 +40,7 @@ __posix_variable: Final[PatternType] = re.compile(r"\$\{[^\}]*\}")
 
 def replace(match: MatchType) -> str:
     name = match.group()[2:-1]
-    return os.environ.get(name, "")
+    return env.get(name, "")
 
 
 def get_content(filename: pathlib.Path) -> str:
@@ -84,7 +85,7 @@ def _load(filename: Union[str, pathlib.PurePath]) -> None:
                 val = re.sub(r"\\(.)", r"\1", m3.group(1))
             # expand values
             val = __posix_variable.sub(replace, val)
-            os.environ[key] = val  # override if exists
+            env.set(key, val)  # override if exists
 
 
 def load(*filenames: Union[str, pathlib.PurePath]) -> None:

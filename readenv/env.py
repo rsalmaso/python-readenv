@@ -18,15 +18,42 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import builtins
-from typing import Final
+import os
+from typing import Any, Callable, cast as typing_cast, Final, TypeVar, Union
 
-from .env import get, set, setdefault  # noqa: F401
-from .readenv import load  # noqa: F401
-from .version import get_version, VersionType
+__all__ = ["get", "set", "setdefault"]
 
-VERSION: Final[VersionType] = (0, 1, 1, "final", 0)
 
-__author__: Final[builtins.str] = "Raffaele Salmaso"
-__author_email__: Final[builtins.str] = "raffaele.salmaso@gmail.com"
-__version__: Final[builtins.str] = get_version(VERSION)
+class Undefined:
+    pass
+
+
+undefined: Final[Undefined] = Undefined()
+
+
+T = TypeVar("T", bound=Any)
+
+CastCallable = Callable[..., object]
+OptionalCastCallable = Union[CastCallable, Undefined]
+
+
+def get(key: str, default: Union[T, Undefined] = undefined, *, cast: OptionalCastCallable = undefined) -> T:
+    value: Any
+    try:
+        value = os.environ[key]
+    except KeyError:
+        if isinstance(default, Undefined):
+            raise KeyError(f"Cannot find {key} in the environment")
+        value = default
+    else:
+        if callable(cast):
+            value = cast(value)
+    return typing_cast(T, value)
+
+
+def set(key: str, value: Any) -> None:
+    os.environ[key] = str(value)
+
+
+def setdefault(key: str, value: Any) -> None:
+    os.environ.setdefault(key, str(value))
