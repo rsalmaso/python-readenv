@@ -81,8 +81,8 @@ def _cast_bool(value: str) -> bool:
     raise ValueError("not a boolean value")
 
 
-def _cast_list(value: str) -> List[str]:
-    return [x for x in value.split(",") if x]
+def _cast_list(value: str, separator: str = ",") -> List[str]:
+    return [x for x in value.split(separator) if x]
 
 
 def _cast_tuple(value: str) -> Tuple[str, ...]:
@@ -200,8 +200,8 @@ class Environ:
     def json(self, key: str, default: Union[Any, Undefined] = undefined) -> Any:
         return self.get(key, default=default, cast=_cast_json)
 
-    def list(self, key: str, default: Union[List[str], Undefined] = undefined) -> List[str]:
-        return self.get(key, default=default, cast=_cast_list)
+    def list(self, key: str, default: Union[List[str], Undefined] = undefined, *, separator: str = ",") -> List[str]:
+        return self.get(key, default=default, cast=lambda value: _cast_list(value, separator=separator))
 
     def tuple(self, key: str, default: Union[Tuple[str], Undefined] = undefined) -> Tuple[str]:
         return self.get(key, default=default, cast=_cast_tuple)

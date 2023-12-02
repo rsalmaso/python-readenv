@@ -1,5 +1,9 @@
 # Changelog
 
+## dev
+
+* add separator parameter to Environ.list
+
 ## 0.3.1
 
 * always apply cast
