@@ -87,8 +87,13 @@ def _cast_list(value: str, *, separator: str = ",", cast: OptionalCastCallable =
     return [cast(x) for x in value.split(separator) if x]
 
 
-def _cast_tuple(value: str, separator: str = ",") -> Tuple[str, ...]:
-    return tuple([x for x in value.split(separator) if x])
+def _cast_tuple(value: str, *, separator: str = ",", cast: OptionalCastCallable = undefined) -> Tuple[str, ...]:
+    _tuple = (
+        [x for x in value.split(separator) if x]
+        if isinstance(cast, Undefined)
+        else [cast(x) for x in value.split(separator) if x]
+    )
+    return tuple(_tuple)
 
 
 def _cast_dict(value: str) -> Dict[str, Any]:
@@ -212,8 +217,15 @@ class Environ:
     ) -> List[str]:
         return self.get(key, default=default, cast=lambda value: _cast_list(value, separator=separator, cast=cast))
 
-    def tuple(self, key: str, default: Union[List[str], Undefined] = undefined, *, separator: str = ",") -> Tuple[str]:
-        return self.get(key, default=default, cast=lambda value: _cast_tuple(value, separator=separator))
+    def tuple(
+        self,
+        key: str,
+        default: Union[List[str], Undefined] = undefined,
+        *,
+        separator: str = ",",
+        cast: OptionalCastCallable = undefined,
+    ) -> Tuple[str]:
+        return self.get(key, default=default, cast=lambda value: _cast_tuple(value, separator=separator, cast=cast))
 
     def str(self, key: str, default: Union[str, Undefined] = undefined, *, multiline: _bool = False) -> str:
         value: str = self.get(key, default)

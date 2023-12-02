@@ -5,6 +5,7 @@
 * add separator parameter to Environ.list
 * add cast parameter to Environ.list
 * add separator to Environ.tuple
+* add cast parameter to Environ.tuple
 
 ## 0.3.1
 
