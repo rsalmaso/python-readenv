@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.4.0
 
 * add separator parameter to Environ.list
 * add cast parameter to Environ.list
