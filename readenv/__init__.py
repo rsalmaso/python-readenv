@@ -21,21 +21,24 @@
 import builtins
 from typing import Final
 
-from .converters import (  # noqa: F401
-    to_bool as bool,
-    to_bytes as bytes,
-    to_decimal as decimal,
-    to_dict as dict,
-    to_float as float,
-    to_int as int,
-    to_json as json,
-    to_list as list,
-    to_str as str,
-    to_tuple as tuple,
-)
-from .env import get, set, setdefault  # noqa: F401
-from .readenv import load  # noqa: F401
-from .version import get_version, VersionType
+from ._environ import environ, Environ  # noqa: F401
+from ._version import get_version, VersionType
+
+bool = environ.bool
+bytes = environ.bytes
+decimal = environ.decimal
+dict = environ.dict
+float = environ.float
+int = environ.int
+json = environ.json
+list = environ.list
+tuple = environ.tuple
+str = environ.str
+load = environ.load
+get = environ.get
+set = environ.set
+setdefault = environ.setdefault
+
 
 VERSION: Final[VersionType] = (0, 2, 0, "final", 0)
 

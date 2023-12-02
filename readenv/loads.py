@@ -18,6 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from .readenv import load
+from ._environ import environ
 
-load()
+environ.load()

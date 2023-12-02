@@ -1,5 +1,11 @@
 # Changelog
 
+## dev
+
+this is a refactor release
+
+* refactored code: added Environ class
+
 ## 0.2.0
 
 * fix typing support for python 3.8
