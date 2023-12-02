@@ -1,5 +1,9 @@
 # Changelog
 
+## dev
+
+* always apply cast
+
 ## 0.3.0
 
 this is a refactor release

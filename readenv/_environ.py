@@ -115,9 +115,8 @@ class Environ:
             if isinstance(default, Undefined):
                 raise KeyError(f"Cannot find {key} in the environment")
             value = default
-        else:
-            if callable(cast):
-                value = cast(value)
+        if callable(cast):
+            value = cast(value)
         return typing_cast(T, value)
 
     def set(self, key: str, value: Any) -> None:
