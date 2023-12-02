@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.3.1
 
 * always apply cast
 
