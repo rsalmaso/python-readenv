@@ -3,6 +3,7 @@
 ## dev
 
 * add separator parameter to Environ.list
+* add cast parameter to Environ.list
 
 ## 0.3.1
 
