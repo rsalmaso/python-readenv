@@ -1,5 +1,9 @@
 # Changelog
 
+## dev
+
+* added py.typed marker
+
 ## 0.4.0
 
 * add separator parameter to Environ.list
