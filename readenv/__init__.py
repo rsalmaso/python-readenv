@@ -21,7 +21,7 @@
 import builtins
 from typing import Final
 
-from ._environ import environ, Environ  # noqa: F401
+from ._environ import Environ, environ  # noqa: F401
 from ._version import get_version, VersionType
 
 bool = environ.bool
