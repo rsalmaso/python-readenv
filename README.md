@@ -38,6 +38,24 @@ import readenv
 readenv.load("myenv", "myenv.local")
 ```
 
+#### mypy integration
+
+If you need to load the environment from mypy you could add
+
+```ini
+[mypy]
+plugins = readenv.mypy
+```
+
+in your `mypy.ini` or `setup.cfg` [file](https://mypy.readthedocs.io/en/latest/config_file.html).
+
+[pyproject.toml](https://mypy.readthedocs.io/en/stable/config_file.html#using-a-pyproject-toml-file) configuration is also supported:
+
+```toml
+[tool.mypy]
+plugins = ["readenv.mypy"]
+```
+
 ## Custom environment
 
 You can create your own environment

@@ -3,6 +3,7 @@
 ## dev
 
 * added py.typed marker
+* added mypy pluging
 
 ## 0.4.0
 
