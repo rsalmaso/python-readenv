@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.5.0
 
 * added py.typed marker
 * added mypy pluging
