@@ -178,7 +178,7 @@ class Environ:
                     val = re.sub(r"\\(.)", r"\1", m3.group(1))
                 # expand values
                 val = _posix_variable.sub(self._replace, val)
-                self.set(key, val)  # override if exists
+                self.setdefault(key, val)  # don't override if exists
 
     def load(self, *filenames: Union[str, pathlib.PurePath]) -> None:
         """Load a list of filename.env [default=(".env", ".env.local")]"""

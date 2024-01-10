@@ -1,5 +1,9 @@
 # Changelog
 
+## dev
+
+* BREAKING: don't override existing enviroment values
+
 ## 0.5.0
 
 * added py.typed marker
