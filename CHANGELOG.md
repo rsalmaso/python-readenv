@@ -1,5 +1,9 @@
 # Changelog
 
+## dev
+
+* added nox
+
 ## 0.6.0
 
 * BREAKING: don't override existing enviroment values

@@ -19,6 +19,7 @@ Thumbs.db
 *.orig
 *.bak
 *.dist-info
+.nox
 
 syntax: regexp
 \.git

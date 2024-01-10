@@ -1,6 +1,2 @@
-black
-build
-mypy
+nox
 pip-tools
-ruff
-twine
