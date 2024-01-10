@@ -27,5 +27,5 @@ class ReadenvPlugin(Plugin):
     pass
 
 
-def plugin(version: str):
+def plugin(version: str) -> Plugin:
     return ReadenvPlugin

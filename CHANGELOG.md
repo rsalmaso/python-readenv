@@ -3,6 +3,7 @@
 ## dev
 
 * BREAKING: don't override existing enviroment values
+* updated typing
 
 ## 0.5.0
 

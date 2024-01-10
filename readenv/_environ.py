@@ -26,9 +26,10 @@ import re
 from typing import (
     Any,
     Callable,
-    Dict,
     Final,
+    Iterable,
     List,
+    Mapping,
     MutableMapping,
     Optional,
     Sequence,
@@ -59,11 +60,12 @@ class Undefined:
     pass
 
 
-PatternType = Pattern[str]
-MatchType = Match[str]
-CastCallable = Callable[..., object]
-OptionalCastCallable = Union[CastCallable, Undefined]
 T = TypeVar("T", bound=Any)
+PatternType: TypeAlias = Pattern[str]
+MatchType: TypeAlias = Match[str]
+CastCallable: TypeAlias = Callable[..., Any]
+OptionalCastCallable: TypeAlias = Union[CastCallable, Undefined]
+_bool: TypeAlias = bool
 
 undefined: Final[Undefined] = Undefined()
 _RE1: Final[PatternType] = re.compile(r"\A(?:export )?([A-Za-z_0-9]+)=(.*)\Z")
@@ -71,35 +73,46 @@ _RE2: Final[PatternType] = re.compile(r"\A'(.*)'\Z")
 _posix_variable: Final[PatternType] = re.compile(r"\$\{[^\}]*\}")
 
 
-def _cast_bool(value: str) -> bool:
-    try:
-        return int(value) != 0
-    except ValueError:
-        value = value.lower()
-        if value in ("y", "yes", "t", "true"):
-            return True
-        elif value in ("n", "no", "f", "false"):
-            return False
-    raise ValueError("not a boolean value")
+def _cast_bool(value: Union[bool, int, str]) -> bool:
+    if isinstance(value, int):
+        return bool(value)
+    if isinstance(value, str):
+        try:
+            return bool(int(value))
+        except ValueError:
+            value = value.lower()
+            if value in ("y", "yes", "t", "true"):
+                return True
+            elif value in ("n", "no", "f", "false"):
+                return False
+        raise ValueError("not a boolean value")
+    return value
 
 
-def _cast_list(value: str, *, separator: str = ",", cast: OptionalCastCallable = undefined) -> List[str]:
+def _cast_list(
+    value: Union[str, Iterable[str]], *, separator: str = ",", cast: OptionalCastCallable = undefined
+) -> List[str]:
+    if isinstance(value, str):
+        if isinstance(cast, Undefined):
+            return [x for x in value.split(separator) if x]
+        return [cast(x) for x in value.split(separator) if x]
     if isinstance(cast, Undefined):
-        return [x for x in value.split(separator) if x]
-    return [cast(x) for x in value.split(separator) if x]
+        return [x for x in value if x]
+    return [cast(x) for x in value if x]
 
 
-def _cast_tuple(value: str, *, separator: str = ",", cast: OptionalCastCallable = undefined) -> Tuple[str, ...]:
-    _tuple = (
-        [x for x in value.split(separator) if x]
-        if isinstance(cast, Undefined)
-        else [cast(x) for x in value.split(separator) if x]
-    )
-    return tuple(_tuple)
+def _cast_tuple(
+    value: Union[str, Iterable[str]], *, separator: str = ",", cast: OptionalCastCallable = undefined
+) -> Tuple[str, ...]:
+    return tuple(_cast_list(value, separator=separator, cast=cast))
 
 
-def _cast_dict(value: str) -> Dict[str, Any]:
-    return dict([val.split("=") for val in value.split(",") if val])
+def _cast_dict(value: Union[Mapping[Any, Any], str]) -> Mapping[Any, Any]:
+    if isinstance(value, Mapping):
+        return value
+    if isinstance(value, str):
+        return dict([val.split("=") for val in value.split(",") if val])
+    raise ValueError("not a mapping value")
 
 
 def _cast_json(value: str) -> Any:
@@ -186,25 +199,23 @@ class Environ:
         for filename in filenames:
             self._load(filename)
 
-    _bool: TypeAlias = bool
-
-    def bool(self, key: str, default: Union[bool, Undefined] = undefined) -> bool:
-        return self.get(key, default=default, cast=_cast_bool)
+    def bool(self, key: str, default: Union[bool, int, str, Undefined] = undefined) -> bool:
+        return self.get(key, default=default, cast=_cast_bool)  # type: ignore[return-value]
 
     def bytes(self, key: str, default: Union[bytes, Undefined] = undefined) -> bytes:
         return self.get(key, default=default, cast=bytes)
 
-    def decimal(self, key: str, default: Union[Decimal, Undefined] = undefined) -> Decimal:
-        return self.get(key, default=default, cast=Decimal)
+    def decimal(self, key: str, default: Union[Decimal, int, str, Undefined] = undefined) -> Decimal:
+        return self.get(key, default=default, cast=Decimal)  # type: ignore[return-value]
 
-    def dict(self, key: str, default: Union[Dict[str, Any], Undefined] = undefined) -> Dict[str, Any]:
+    def dict(self, key: str, default: Union[Mapping[Any, Any], Undefined] = undefined) -> Mapping[Any, Any]:
         return self.get(key, default=default, cast=_cast_dict)
 
-    def float(self, key: str, default: Union[float, Undefined] = undefined) -> float:
-        return self.get(key, default=default, cast=float)
+    def float(self, key: str, default: Union[float, str, Undefined] = undefined) -> float:
+        return self.get(key, default=default, cast=float)  # type: ignore[return-value]
 
-    def int(self, key: str, default: Union[int, Undefined] = undefined) -> int:
-        return self.get(key, default=default, cast=int)
+    def int(self, key: str, default: Union[int, str, Undefined] = undefined) -> int:
+        return self.get(key, default=default, cast=int)  # type: ignore[return-value]
 
     def json(self, key: str, default: Union[Any, Undefined] = undefined) -> Any:
         return self.get(key, default=default, cast=_cast_json)
@@ -212,22 +223,28 @@ class Environ:
     def list(
         self,
         key: str,
-        default: Union[List[str], Undefined] = undefined,
+        default: Union[str, Iterable[str], Undefined] = undefined,
         *,
         separator: str = ",",
         cast: OptionalCastCallable = undefined,
     ) -> List[str]:
-        return self.get(key, default=default, cast=lambda value: _cast_list(value, separator=separator, cast=cast))
+        return typing_cast(
+            List[str],
+            self.get(key, default=default, cast=lambda value: _cast_list(value, separator=separator, cast=cast)),
+        )
 
     def tuple(
         self,
         key: str,
-        default: Union[List[str], Undefined] = undefined,
+        default: Union[str, Iterable[str], Undefined] = undefined,
         *,
         separator: str = ",",
         cast: OptionalCastCallable = undefined,
     ) -> Tuple[str]:
-        return self.get(key, default=default, cast=lambda value: _cast_tuple(value, separator=separator, cast=cast))
+        return typing_cast(
+            Tuple[str],
+            self.get(key, default=default, cast=lambda value: _cast_tuple(value, separator=separator, cast=cast)),
+        )
 
     def str(self, key: str, default: Union[str, Undefined] = undefined, *, multiline: _bool = False) -> str:
         value: str = self.get(key, default)
