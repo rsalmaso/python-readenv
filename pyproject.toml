@@ -66,63 +66,47 @@ safe = true
 target-version = ["py38"]
 
 [tool.ruff]
-select = [
-    "B", # flake8-bugbear
-    "C90", # mccabe
-    "E", # pycodestyle
-    "F", # pyflakes
-    "I", # isort
-    "W", # pycodestyle
+exclude = [
 ]
 ignore = [
+    "B018", # Found useless expression. Either assign it to a variable or remove it.
+    "B026", # Star-arg unpacking after a keyword argument is strongly discouraged
+    "B904", # Within an except clause, raise exceptions with raise ... from err or raise ... from None to
+            # distinguish them from errors in exception handling.
+    "B905", # zip() without an explicit strict= parameter set. strict=True causes the resulting iterator
+            # to raise a ValueError if the arguments are exhausted at differing lengths.
     "E722", # Do not use bare except, specify exception instead
-    "B904",
 ]
-
-# # Allow autofix for all enabled rules (when `--fix`) is provided.
 fixable = [
     "I",
 ]
 unfixable = [
     "F401", # don't remove unused import
 ]
-
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
-]
-
 line-length = 120
-
+select = [
+    "B", # flake8-bugbear
+    "C9", # mccabe
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+    "Q",
+    "W", # pycodestyle
+]
 target-version = "py38"
 
-[tool.ruff.mccabe]
-max-complexity = 18
+[tool.ruff.flake8-quotes]
+inline-quotes = "double"
 
 [tool.ruff.isort]
-combine-as-imports = true
+combine-as-imports = false
 force-sort-within-sections = true
+force-wrap-aliases = true
 known-first-party = [
 ]
 known-third-party = [
 ]
 order-by-type = false
+
+[tool.ruff.mccabe]
+max-complexity = 18

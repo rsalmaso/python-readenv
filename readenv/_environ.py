@@ -26,7 +26,6 @@ import re
 from typing import (
     Any,
     Callable,
-    cast as typing_cast,
     Dict,
     Final,
     List,
@@ -36,6 +35,9 @@ from typing import (
     Tuple,
     TypeVar,
     Union,
+)
+from typing import (
+    cast as typing_cast,
 )
 
 try:
