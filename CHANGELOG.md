@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.6.1
 
 * added nox
 * commit tests
