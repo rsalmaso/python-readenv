@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.6.0
 
 * BREAKING: don't override existing enviroment values
 * updated typing
