@@ -3,10 +3,10 @@ from typing import Final, List
 
 import nox
 
-FILES: Final[List[str]] = ["readenv", "noxfile.py"]
+FILES: Final[List[str]] = ["readenv", "tests", "noxfile.py"]
 PYTHON: Final[List[str]] = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
-nox.options.sessions = ["lint"]
+nox.options.sessions = ["lint", "tests"]
 
 
 def requirements_file(session: nox.Session) -> str:
@@ -16,6 +16,12 @@ def requirements_file(session: nox.Session) -> str:
 def install(session: nox.Session) -> None:
     with session.cd("requirements"):
         session.install("-r", requirements_file(session))
+
+
+@nox.session(python=PYTHON)
+def tests(session: nox.Session) -> None:
+    install(session)
+    session.run("pytest")
 
 
 @nox.session(python=["3.10"])

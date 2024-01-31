@@ -20,6 +20,7 @@ Thumbs.db
 *.bak
 *.dist-info
 .nox
+.pytest_cache
 
 syntax: regexp
 \.git

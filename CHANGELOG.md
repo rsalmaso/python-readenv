@@ -3,6 +3,7 @@
 ## dev
 
 * added nox
+* commit tests
 
 ## 0.6.0
 
