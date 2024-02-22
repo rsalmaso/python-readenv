@@ -66,6 +66,10 @@ class CastTestCase(unittest.TestCase):
         with load():
             self.assertEqual(readenv.dict("DICT_ENV_1"), {})
             self.assertEqual(readenv.dict("DICT_ENV_2"), {"question": "unknown", "answer": "42"})
+            self.assertEqual(
+                readenv.dict("DICT_ENV_3", separator="/", value_separator=":"),
+                {"question": "unknown", "answer": "42"},
+            )
             self.assertRaises(ValueError, readenv.dict, "INVALID_DICT_ENV_1")
 
     def test_json(self) -> None:

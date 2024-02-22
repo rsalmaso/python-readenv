@@ -1,5 +1,9 @@
 # Changelog
 
+## dev
+
+* made dict converter separators customizable
+
 ## 0.6.1
 
 * added nox

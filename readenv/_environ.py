@@ -113,11 +113,16 @@ def _cast_tuple(
     return tuple(_cast_list(value, separator=separator, cast=cast))
 
 
-def _cast_dict(value: Union[Mapping[Any, Any], str]) -> Mapping[Any, Any]:
+def _cast_dict(
+    value: Union[Mapping[Any, Any], str],
+    *,
+    separator: str = ",",
+    value_separator: str = "=",
+) -> Mapping[Any, Any]:
     if isinstance(value, Mapping):
         return value
     if isinstance(value, str):
-        return dict([val.split("=") for val in value.split(",") if val])
+        return dict([val.split(value_separator) for val in value.split(separator) if val])
     raise ValueError("not a mapping value")
 
 
@@ -214,8 +219,19 @@ class Environ:
     def decimal(self, key: str, default: Union[Decimal, int, str, Undefined] = undefined) -> Decimal:
         return self.get(key, default=default, cast=Decimal)  # type: ignore[return-value]
 
-    def dict(self, key: str, default: Union[Mapping[Any, Any], Undefined] = undefined) -> Mapping[Any, Any]:
-        return self.get(key, default=default, cast=_cast_dict)
+    def dict(
+        self,
+        key: str,
+        default: Union[Mapping[Any, Any], Undefined] = undefined,
+        *,
+        separator: str = ",",
+        value_separator: str = "=",
+    ) -> Mapping[Any, Any]:
+        return self.get(
+            key,
+            default=default,
+            cast=lambda value: _cast_dict(value, separator=separator, value_separator=value_separator),
+        )
 
     def float(self, key: str, default: Union[float, str, Undefined] = undefined) -> float:
         return self.get(key, default=default, cast=float)  # type: ignore[return-value]
