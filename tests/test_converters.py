@@ -66,11 +66,7 @@ class CastTestCase(unittest.TestCase):
         with load():
             self.assertEqual(readenv.dict("DICT_ENV_1"), {})
             self.assertEqual(readenv.dict("DICT_ENV_2"), {"question": "unknown", "answer": "42"})
-            self.assertEqual(readenv.json("DICT_ENV_3"), {"question": "unknown", "answer": 42})
-            # self.assertEqual(readenv.dict("DICT_ENV_3"), ("42",))
-            # self.assertEqual(readenv.dict("DICT_ENV_3", cast=int), (42,))
-            # self.assertEqual(readenv.dict("DICT_ENV_4"), ("42", "43"))
-            # self.assertEqual(readenv.dict("DICT_ENV_4", cast=int), (42, 43))
+            self.assertRaises(ValueError, readenv.dict, "INVALID_DICT_ENV_1")
 
     def test_json(self) -> None:
         with load():
