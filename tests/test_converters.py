@@ -43,15 +43,13 @@ class CastTestCase(unittest.TestCase):
     def test_list(self) -> None:
         with load():
             self.assertEqual(readenv.list("LIST_ENV_1"), [])
+            self.assertEqual(readenv.list("LIST_ENV_1", cast=int), [])
             self.assertEqual(readenv.list("LIST_ENV_2"), ["42"])
+            self.assertEqual(readenv.list("LIST_ENV_2", cast=int), [42])
             self.assertEqual(readenv.list("LIST_ENV_3"), ["42"])
+            self.assertEqual(readenv.list("LIST_ENV_3", cast=int), [42])
             self.assertEqual(readenv.list("LIST_ENV_4"), ["42", "43"])
-            # self.assertRaises(ValueError, readenv.list, "INVALID_LIST_ENV_1")
-            # self.assertRaises(ValueError, readenv.list, "INVALID_LIST_ENV_2")
-            # self.assertRaises(ValueError, readenv.list, "INVALID_LIST_ENV_3")
-            # self.assertEqual(readenv.list("LIST_ENV_5"), [])
-            # self.assertEqual(readenv.json("LIST_ENV_5"), [])
-            # self.assertEqual(readenv.list("LIST_ENV_2"), [])
+            self.assertEqual(readenv.list("LIST_ENV_4", cast=int), [42, 43])
 
     # def test_tuple(self) -> None:
     #     with load():
