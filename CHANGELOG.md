@@ -1,6 +1,6 @@
 # Changelog
 
-## dev
+## 0.7.0
 
 * made dict converter separators customizable
 * EXPERIMENTAL: made the json converter aware of base64 content
