@@ -51,14 +51,16 @@ class CastTestCase(unittest.TestCase):
             self.assertEqual(readenv.list("LIST_ENV_4"), ["42", "43"])
             self.assertEqual(readenv.list("LIST_ENV_4", cast=int), [42, 43])
 
-    # def test_tuple(self) -> None:
-    #     with load():
-    #         self.assertEqual(readenv.tuple("TUPLE_ENV_1"), ())
-    #         # self.assertEqual(readenv.tuple("TUPLE_ENV_2"), [])
-    #         self.assertEqual(readenv.tuple("TUPLE_ENV_3"), ("42",))
-    #         self.assertEqual(readenv.tuple("TUPLE_ENV_3", cast=int), (42,))
-    #         self.assertEqual(readenv.tuple("TUPLE_ENV_4"), ("42", "43"))
-    #         self.assertEqual(readenv.tuple("TUPLE_ENV_4", cast=int), (42, 43))
+    def test_tuple(self) -> None:
+        with load():
+            self.assertEqual(readenv.tuple("TUPLE_ENV_1"), ())
+            self.assertEqual(readenv.tuple("TUPLE_ENV_1", cast=int), ())
+            self.assertEqual(readenv.tuple("TUPLE_ENV_2"), ("42",))
+            self.assertEqual(readenv.tuple("TUPLE_ENV_2", cast=int), (42,))
+            self.assertEqual(readenv.tuple("TUPLE_ENV_3"), ("42",))
+            self.assertEqual(readenv.tuple("TUPLE_ENV_3", cast=int), (42,))
+            self.assertEqual(readenv.tuple("TUPLE_ENV_4"), ("42", "43"))
+            self.assertEqual(readenv.tuple("TUPLE_ENV_4", cast=int), (42, 43))
 
     def test_dict(self) -> None:
         with load():
