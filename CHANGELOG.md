@@ -3,6 +3,8 @@
 ## dev
 
 * made dict converter separators customizable
+* EXPERIMENTAL: made the json converter aware of base64 content
+  and automatically decode it
 
 ## 0.6.1
 

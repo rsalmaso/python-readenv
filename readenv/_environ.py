@@ -18,6 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+import base64
+import binascii
 from decimal import Decimal
 import json
 import os
@@ -127,6 +129,10 @@ def _cast_dict(
 
 
 def _cast_json(value: str) -> Any:
+    try:
+        value = base64.b64decode(value, validate=True).decode("utf-8")
+    except binascii.Error:
+        pass
     return json.loads(value)
 
 

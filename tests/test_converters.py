@@ -77,6 +77,8 @@ class CastTestCase(unittest.TestCase):
             self.assertEqual(readenv.json("JSON_ENV_1"), {})
             self.assertEqual(readenv.json("JSON_ENV_2"), {"question": "unknown", "answer": 42})
             self.assertEqual(readenv.json("JSON_ENV_3"), {"question": "unknown", "answer": 42})
+            self.assertEqual(readenv.json("JSON_ENV_4"), {})
+            self.assertEqual(readenv.json("JSON_ENV_5"), {"question": "unknown", "answer": 42})
             self.assertRaises(ValueError, readenv.json, "INVALID_JSON_ENV_1")
             self.assertRaises(ValueError, readenv.json, "INVALID_JSON_ENV_2")
 
