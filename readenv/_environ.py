@@ -90,7 +90,10 @@ def _cast_bool(value: Union[bool, int, str]) -> bool:
 
 
 def _cast_list(
-    value: Union[str, Iterable[str]], *, separator: str = ",", cast: OptionalCastCallable = undefined
+    value: Union[str, Iterable[str]],
+    *,
+    separator: str = ",",
+    cast: OptionalCastCallable = undefined,
 ) -> List[str]:
     if isinstance(value, str):
         if isinstance(cast, Undefined):
@@ -102,7 +105,10 @@ def _cast_list(
 
 
 def _cast_tuple(
-    value: Union[str, Iterable[str]], *, separator: str = ",", cast: OptionalCastCallable = undefined
+    value: Union[str, Iterable[str]],
+    *,
+    separator: str = ",",
+    cast: OptionalCastCallable = undefined,
 ) -> Tuple[str, ...]:
     return tuple(_cast_list(value, separator=separator, cast=cast))
 
