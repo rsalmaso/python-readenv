@@ -1,5 +1,0 @@
-mypy
-nox
-pip-tools
-pytest
-ruff

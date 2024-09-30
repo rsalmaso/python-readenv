@@ -28,6 +28,7 @@ import re
 from typing import (
     Any,
     Callable,
+    Dict,
     Final,
     Iterable,
     List,
@@ -39,9 +40,7 @@ from typing import (
     TypeVar,
     Union,
 )
-from typing import (
-    cast as typing_cast,
-)
+from typing import cast as typing_cast
 
 try:
     from typing import TypeAlias  # type: ignore[attr-defined]
@@ -190,31 +189,39 @@ class Environ:
                 pass
         return content
 
-    def _load(self, filename: Union[str, pathlib.PurePath]) -> None:
+    def _load(self, filename: Union[str, pathlib.PurePath]) -> Mapping[str, str]:
         path: pathlib.Path = pathlib.Path(filename)
         content: str = self._get_content(path) if path.is_absolute() else self._get_content_from_parts(str(filename))
+        environ: Dict[str, str] = {}
 
         for line in content.splitlines():  # ???
             m1: Optional[MatchType] = _RE1.match(line)
             key: str
-            val: str
+            value: str
             if m1:
-                key, val = m1.group(1), m1.group(2)
-                m2: Optional[MatchType] = _RE2.match(val)
+                key, value = m1.group(1), m1.group(2)
+                m2: Optional[MatchType] = _RE2.match(value)
                 if m2:
-                    val = m2.group(1)
-                m3: Optional[MatchType] = _RE2.match(val)
+                    value = m2.group(1)
+                m3: Optional[MatchType] = _RE2.match(value)
                 if m3:
-                    val = re.sub(r"\\(.)", r"\1", m3.group(1))
+                    value = re.sub(r"\\(.)", r"\1", m3.group(1))
                 # expand values
-                val = _posix_variable.sub(self._replace, val)
-                self.setdefault(key, val)  # don't override if exists
+                environ[key] = _posix_variable.sub(self._replace, value)
+        return environ
 
     def load(self, *filenames: Union[str, pathlib.PurePath]) -> None:
         """Load a list of filename.env [default=(".env", ".env.local")]"""
         filenames = filenames if filenames else (".env", ".env.local")
+
+        # collect all vars
+        environ: Dict[str, str] = {}
         for filename in filenames:
-            self._load(filename)
+            environ.update(self._load(filename))
+
+        # set
+        for key, value in environ.items():
+            self.setdefault(key, value)
 
     def bool(self, key: str, default: Union[bool, int, str, Undefined] = undefined) -> bool:
         return self.get(key, default=default, cast=_cast_bool)  # type: ignore[return-value]

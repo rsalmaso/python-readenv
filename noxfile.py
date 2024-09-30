@@ -1,21 +1,21 @@
-import os
 from typing import Final, List
 
 import nox
 
 FILES: Final[List[str]] = ["readenv", "tests", "noxfile.py"]
-PYTHON: Final[List[str]] = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+PYTHON: Final[List[str]] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 nox.options.sessions = ["lint", "tests"]
-
-
-def requirements_file(session: nox.Session) -> str:
-    return f"requirements-{session.python}.txt"
+nox.options.reuse_existing_virtualenvs = True
+nox.options.error_on_external_run = True
+nox.options.default_venv_backend = "uv|virtualenv"
 
 
 def install(session: nox.Session) -> None:
-    with session.cd("requirements"):
-        session.install("-r", requirements_file(session))
+    pyproject = nox.project.load_toml("pyproject.toml")
+    session.install(
+        *nox.project.dependency_groups(pyproject, "dev"),
+    )
 
 
 @nox.session(python=PYTHON)
@@ -27,25 +27,6 @@ def tests(session: nox.Session) -> None:
 @nox.session(python=["3.10"])
 def lint(session: nox.Session) -> None:
     install(session)
-    session.run("ruff", *FILES)
+    session.run("ruff", "check", *FILES)
+    session.run("ruff", "format", "--check", *FILES)
     session.run("mypy", *FILES)
-
-
-@nox.session(python=PYTHON)
-def requirements(session: nox.Session) -> None:
-    with session.cd("requirements"):
-        session.install("pip-tools")
-        try:
-            with open("requirements.in", "wt") as fout:
-                with open("../requirements.in", "rt") as fin:
-                    fout.write(fin.read())
-                    fout.flush()
-                session.run(
-                    "pip-compile",
-                    "--upgrade",
-                    "--annotation-style=line",
-                    f"--output-file={requirements_file(session)}",
-                    "requirements.in",
-                )
-        finally:
-            os.unlink("requirements.in")

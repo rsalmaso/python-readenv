@@ -1,5 +1,11 @@
 # Changelog
 
+## dev
+
+* update ruff to 0.11.2
+* switch development to uv/nox[uv] and replace custom requirements with uv.lock file
+* upgrade all requirements to latest version
+
 ## 0.7.0
 
 * made dict converter separators customizable

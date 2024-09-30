@@ -25,7 +25,9 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
+dependencies = []
 dynamic = [
     "version",
 ]
@@ -36,6 +38,18 @@ Documentation = "https://github.com/rsalmaso/python-readenv/blob/main/README.md"
 GitHub = "https://github.com/rsalmaso/python-readenv"
 Changelog = "https://github.com/rsalmaso/python-readenv/blob/main/CHANGELOG.md"
 "Bug Reports" = "https://github.com/rsalmaso/python-readenv/discussions"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.14.1",
+    "nox[uv]>=2025.2.9",
+    "pytest>=8.3.5",
+    "ruff>=0.11.2",
+]
+
+[tool.uv]
+# Ensure Nox always gets a fresh package.
+reinstall-package = ["python-readenv"]
 
 [tool.setuptools]
 zip-safe = false
@@ -49,6 +63,15 @@ universal = false
 [tool.ruff]
 exclude = [
 ]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.format]
+indent-style = "space"
+line-ending = "lf"
+quote-style = "double"
+
+[tool.ruff.lint]
 ignore = [
     "B018", # Found useless expression. Either assign it to a variable or remove it.
     "B026", # Star-arg unpacking after a keyword argument is strongly discouraged
@@ -64,7 +87,6 @@ fixable = [
 unfixable = [
     "F401", # don't remove unused import
 ]
-line-length = 120
 select = [
     "B", # flake8-bugbear
     "C9", # mccabe
@@ -74,25 +96,20 @@ select = [
     "Q",
     "W", # pycodestyle
 ]
-target-version = "py38"
 
-[tool.ruff.flake8-quotes]
+[tool.ruff.lint.flake8-quotes]
 inline-quotes = "double"
 
-[tool.ruff.format]
-indent-style = "space"
-line-ending = "lf"
-quote-style = "double"
-
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = false
 force-sort-within-sections = true
 force-wrap-aliases = true
 known-first-party = [
+    "readenv",
 ]
 known-third-party = [
 ]
 order-by-type = false
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 18
