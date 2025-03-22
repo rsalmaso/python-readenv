@@ -3,6 +3,7 @@ include CHANGELOG.md
 include AUTHORS
 include LICENSE
 include MANIFEST.in
+include CONTRIBUTING.md
 graft readenv
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
