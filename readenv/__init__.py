@@ -40,7 +40,7 @@ set = environ.set
 setdefault = environ.setdefault
 
 
-VERSION: Final[VersionType] = (0, 7, 0, "final", 0)
+VERSION: Final[VersionType] = (0, 7, 1, "final", 0)
 
 __author__: Final[builtins.str] = "Raffaele Salmaso"
 __author_email__: Final[builtins.str] = "raffaele.salmaso@gmail.com"
